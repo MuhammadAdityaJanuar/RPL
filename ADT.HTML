@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Presensi Karyawan — Turn arround SBU JPP PKT</title>
+  <meta name="description" content="Presensi Turn arround SBU JPP PKT — check-in & check-out karyawan" />
+  <style>
+    :root { --accent: #007bff; --muted: #6b7280; --card-bg: rgba(255,255,255,0.95); }
+    * { box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: url('P4 (1).jpg') center top / cover no-repeat;
+      color: #091226;
+    }
+    .overlay { background: rgba(0,0,0,0.45); min-height: 100%; padding: 36px 18px; }
+    .container { max-width: 1080px; margin: 0 auto; }
+    header { display: flex; gap: 16px; align-items: center; margin-bottom: 18px; }
+    .logo { width: 100px; height: auto; border-radius: 10px; background: #fff; padding: 8px; box-shadow: 0 8px 30px rgba(2,8,20,0.5); }
+    h1 { margin: 0; color: #fff; font-size: 22px; }
+    p.lead { margin: 4px 0 0; color: rgba(255,255,255,0.9); font-size: 14px; }
+    .card { background: var(--card-bg); border-radius: 12px; padding: 18px; box-shadow: 0 10px 40px rgba(2,8,20,0.35); }
+    .top-form { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+    .top-form > div { flex: 1; min-width: 180px; }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    input[type="text"], input[type="datetime-local"], input[type="search"], select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #e6e9ef; font-size: 14px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .col { background: rgba(255,255,255,0.85); border-radius: 10px; padding: 12px; border: 1px solid #eef1f6; }
+    .col h3 { margin: 0 0 8px; font-size: 16px; }
+    .row { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+    button { padding: 9px 12px; border-radius: 8px; border: 0; cursor: pointer; font-weight: 600; }
+    button.primary { background: var(--accent); color: #fff; }
+    button.ghost { background: transparent; border: 1px solid #d6dae6; color: #0b1220; }
+    table { width: 100%; border-collapse: collapse; margin-top: 14px; background: transparent; }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid rgba(11,17,34,0.06); font-size: 14px; }
+    th { color: var(--muted); font-weight: 700; }
+    td.center { text-align: center; }
+    footer { margin-top: 12px; color: rgba(255,255,255,0.85); font-size: 13px; text-align: center; }
+    @media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } .top-form { flex-direction: column; } }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+      <header>
+        <img src="images (1).jpeg" alt="Logo SBU JPP PKT" class="logo" />
+        <div>
+          <h1>Presensi Karyawan — Turn arround SBU JPP PKT</h1>
+          <p class="lead">Check-in & Check-out | Otomatis / Manual | LocalStorage + CSV</p>
+        </div>
+      </header>
+
+      <section class="card">
+        <!-- Perusahaan (baru ditambahkan seperti diminta) -->
+        <div class="top-form">
+          <div>
+            <label for="company">Perusahaan</label>
+            <select id="company">
+              <option value="PT SULTAN ANUGERAH SEMESTA">1. PT SULTAN ANUGERAH SEMESTA</option>
+              <option value="PT MULTI STAMPLASSTING TEKNIK">2. PT MULTI STAMPLASSTING TEKNIK</option>
+              <option value="PT TITIAN ENGGANG MAHAKAM">3. PT TITIAN ENGGANG MAHAKAM</option>
+              <option value="PT ERDA INDAH">4. PT ERDA INDAH</option>
+              <option value="PT RIFSI SALSA UTAMA">5. PT RIFSI SALSA UTAMA</option>
+              <option value="PT TRI ENERGIENERINDO">6. PT TRI ENERGIENERINDO</option>
+              <option value="PT KALIMANTAN AGUNG PERSADA">7. PT KALIMANTAN AGUNG PERSADA</option>
+              <option value="PT MILDA">8. PT MILDA</option>
+              <option value="PT KALTIM NUSA ETIKA">9. PT KALTIM NUSA ETIKA</option>
+              <option value="PT YEPEKA USAHA MANDIRI">10. PT YEPEKA USAHA MANDIRI</option>
+              <option value="lainnya">11. Lainnya (Tulis nama perusahaan Anda)</option>
+            </select>
+          </div>
+
+          <div id="companyOtherWrap" style="display:none">
+            <label for="companyOther">Tulis nama perusahaan Anda (jika tidak ada)</label>
+            <input id="companyOther" type="text" placeholder="Nama perusahaan" />
+          </div>
+
+          <div><label>Nama</label><input id="nama" type="text" placeholder="Masukkan nama karyawan"></div>
+          <div><label>NIK</label><input id="nik" type="text" placeholder="Masukkan NIK"></div>
+          <div><label>Unit</label><input id="unit" type="text" placeholder="Contoh: SBU JPP"></div>
+          <div><label>Keterangan</label><input id="note" type="text" placeholder="Contoh: Shift A"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="col">
+            <h3>Check-in</h3>
+            <label><input type="radio" name="inMode" value="auto" checked> Otomatis</label>
+            <label><input type="radio" name="inMode" value="manual"> Manual</label>
+            <input type="datetime-local" id="checkInTime">
+            <div class="row">
+              <button class="primary" id="btnInSave">Simpan Check-in</button>
+              <button class="ghost" id="btnInNow">Perbarui Waktu</button>
+            </div>
+          </div>
+
+          <div class="col">
+            <h3>Check-out</h3>
+            <label><input type="radio" name="outMode" value="auto" checked> Otomatis</label>
+            <label><input type="radio" name="outMode" value="manual"> Manual</label>
+            <input type="datetime-local" id="checkOutTime">
+            <div class="row">
+              <button class="primary" id="btnOutSave">Simpan Check-out</button>
+              <button class="ghost" id="btnOutNow">Perbarui Waktu</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:15px;flex-wrap:wrap;">
+          <input type="search" id="search" placeholder="Cari nama, NIK, unit, perusahaan, atau tipe..." style="flex:1;">
+          <button class="ghost" id="btnExport">Ekspor CSV</button>
+          <button class="ghost" id="btnClear">Hapus Semua</button>
+        </div>
+
+        <table id="tabelPresensi">
+          <thead>
+            <tr><th>Perusahaan</th><th>Nama</th><th>NIK</th><th>Unit</th><th>Keterangan</th><th>Waktu</th><th>Tipe</th><th class="center">Aksi</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <footer>© 2025 SBU Jasa Pelayanan Pabrik — Pupuk Kaltim | Data disimpan di browser</footer>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'presensi_jpp_pkt_v3';
+    const company = document.getElementById('company');
+    const companyOtherWrap = document.getElementById('companyOtherWrap');
+    const companyOther = document.getElementById('companyOther');
+    const nama = document.getElementById('nama');
+    const nik = document.getElementById('nik');
+    const unit = document.getElementById('unit');
+    const note = document.getElementById('note');
+    const checkInTime = document.getElementById('checkInTime');
+    const checkOutTime = document.getElementById('checkOutTime');
+    const btnInSave = document.getElementById('btnInSave');
+    const btnOutSave = document.getElementById('btnOutSave');
+    const btnInNow = document.getElementById('btnInNow');
+    const btnOutNow = document.getElementById('btnOutNow');
+    const btnExport = document.getElementById('btnExport');
+    const btnClear = document.getElementById('btnClear');
+    const tableBody = document.querySelector('#tabelPresensi tbody');
+    const search = document.getElementById('search');
+
+    function nowDisplay() { return new Date().toLocaleString('id-ID', { hour12: false }); }
+    function nowLocalInputValue() {
+      const d = new Date(); const p = n => String(n).padStart(2,'0');
+      return `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+    }
+
+    function loadData() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { console.error(e); return []; }
+    }
+    function saveData(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+    function escapeCsvCell(s) { const str = String(s == null ? '' : s); return '"' + str.replace(/"/g,'""') + '"'; }
+    function toCSV(list) {
+      const header = ['Perusahaan','Nama','NIK','Unit','Keterangan','Waktu','Tipe'];
+      const rows = [header.map(escapeCsvCell).join(',')];
+      list.forEach(r => rows.push([r.company,r.nama,r.nik,r.unit||'',r.note||'',r.waktu,r.type].map(escapeCsvCell).join(',')));
+      return rows.join('\n');
+    }
+
+    // show/hide 'lainnya' input
+    company.addEventListener('change', () => {
+      companyOtherWrap.style.display = company.value === 'lainnya' ? 'block' : 'none';
+    });
+
+    // render table (newest first)
+    function renderTable() {
+      const data = loadData();
+      const q = (search.value || '').trim().toLowerCase();
+      tableBody.innerHTML = '';
+      data.slice().reverse().forEach((r, revIdx) => {
+        const origIdx = data.length - 1 - revIdx;
+        const hay = [r.company,r.nama,r.nik,r.unit,r.note,r.type].join(' ').toLowerCase();
+        if (q && !hay.includes(q)) return;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${r.company}</td>
+          <td>${r.nama}</td>
+          <td>${r.nik}</td>
+          <td>${r.unit || ''}</td>
+          <td>${r.note || ''}</td>
+          <td>${r.waktu}</td>
+          <td>${r.type}</td>
+          <td class="center"><button class="ghost del" data-idx="${origIdx}">Hapus</button></td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      tableBody.querySelectorAll('.del').forEach(btn => btn.onclick = e => {
+        const idx = Number(e.currentTarget.dataset.idx); if (!Number.isFinite(idx)) return;
+        if (!confirm('Hapus entri ini?')) return;
+        const data = loadData(); data.splice(idx,1); saveData(data); renderTable();
+      });
+    }
+
+    // initialize datetime inputs
+    function initDateTimeInputs() { checkInTime.value = nowLocalInputValue(); checkOutTime.value = nowLocalInputValue(); }
+
+    btnInNow.addEventListener('click', () => { checkInTime.value = nowLocalInputValue(); alert('Waktu check-in diperbarui.'); });
+    btnOutNow.addEventListener('click', () => { checkOutTime.value = nowLocalInputValue(); alert('Waktu check-out diperbarui.'); });
+
+    btnInSave.addEventListener('click', () => {
+      const n = nama.value.trim(); const id = nik.value.trim(); if (!n || !id) return alert('Nama dan NIK harus diisi!');
+      const comp = company.value === 'lainnya' ? (companyOther.value.trim() || 'Lainnya') : company.value;
+      const mode = document.querySelector('input[name="inMode"]:checked').value;
+      const waktu = mode === 'auto' ? nowDisplay() : (checkInTime.value ? new Date(checkInTime.value).toLocaleString('id-ID', { hour12:false }) : null);
+      if (!waktu) return alert('Pilih waktu manual untuk check-in.');
+      const rec = { company: comp, nama: n, nik: id, unit: unit.value.trim(), note: note.value.trim(), waktu, type: 'Check-in' };
+      const data = loadData(); data.push(rec); saveData(data); renderTable(); alert('Check-in tersimpan.');
+    });
+
+    btnOutSave.addEventListener('click', () => {
+      const n = nama.value.trim(); const id = nik.value.trim(); if (!n || !id) return alert('Nama dan NIK harus diisi!');
+      const comp = company.value === 'lainnya' ? (companyOther.value.trim() || 'Lainnya') : company.value;
+      const mode = document.querySelector('input[name="outMode"]:checked').value;
+      const waktu = mode === 'auto' ? nowDisplay() : (checkOutTime.value ? new Date(checkOutTime.value).toLocaleString('id-ID', { hour12:false }) : null);
+      if (!waktu) return alert('Pilih waktu manual untuk check-out.');
+      const rec = { company: comp, nama: n, nik: id, unit: unit.value.trim(), note: note.value.trim(), waktu, type: 'Check-out' };
+      const data = loadData(); data.push(rec); saveData(data); renderTable(); alert('Check-out tersimpan.');
+    });
+
+    btnExport.addEventListener('click', () => {
+      const data = loadData(); if (!data.length) return alert('Tidak ada data untuk diekspor.');
+      const csv = toCSV(data); const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'presensi_jpp_pkt.csv'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
+    });
+
+    btnClear.addEventListener('click', () => { if (!confirm('Hapus semua data presensi?')) return; localStorage.removeItem(STORAGE_KEY); renderTable(); });
+
+    search.addEventListener('input', renderTable);
+
+    // init
+    (function(){ initDateTimeInputs(); renderTable(); nama.focus(); })();
+  </script>
+</body>
+</html>
